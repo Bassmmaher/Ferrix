@@ -14,6 +14,7 @@ class ExploreScreen extends StatelessWidget {
 
       backgroundColor: const Color(0xff64758D),
 
+
       body: Center(
 
         child: Container(
@@ -32,6 +33,7 @@ class ExploreScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
 
           ),
+
 
 
           child: Column(
@@ -57,7 +59,9 @@ class ExploreScreen extends StatelessWidget {
               ),
 
 
+
               const SizedBox(height: 8),
+
 
 
               const Text(
@@ -119,6 +123,7 @@ class ExploreScreen extends StatelessWidget {
 
                     backgroundColor: Colors.blue,
 
+
                     shape: RoundedRectangleBorder(
 
                       borderRadius: BorderRadius.circular(25),
@@ -129,7 +134,7 @@ class ExploreScreen extends StatelessWidget {
 
 
 
-                  onPressed: () {
+                  onPressed: (){
 
 
                     Navigator.push(
@@ -138,7 +143,7 @@ class ExploreScreen extends StatelessWidget {
 
                       MaterialPageRoute(
 
-                        builder: (_) => const LoginScreen(),
+                        builder: (context)=> const LoginScreen(),
 
                       ),
 
@@ -156,6 +161,8 @@ class ExploreScreen extends StatelessWidget {
                     style: TextStyle(
 
                       color: Colors.white,
+
+                      fontSize: 16,
 
                     ),
 
@@ -181,12 +188,17 @@ class ExploreScreen extends StatelessWidget {
 
 
 
-  Widget socialButton(String text, String image) {
+
+
+  Widget socialButton(String text, String image){
 
 
     return Container(
 
       height: 45,
+
+
+      width: double.infinity,
 
 
       decoration: BoxDecoration(
@@ -197,9 +209,11 @@ class ExploreScreen extends StatelessWidget {
 
         ),
 
+
         borderRadius: BorderRadius.circular(10),
 
       ),
+
 
 
       child: Row(
@@ -210,6 +224,7 @@ class ExploreScreen extends StatelessWidget {
         children: [
 
 
+
           Image.asset(
 
             image,
@@ -218,25 +233,48 @@ class ExploreScreen extends StatelessWidget {
 
             height: 20,
 
+
+            errorBuilder: (context,error,stackTrace){
+
+              return const Icon(
+
+                Icons.image_not_supported,
+
+                size:20,
+
+              );
+
+            },
+
+
           ),
 
 
 
-          const SizedBox(width: 10),
+          const SizedBox(width:10),
 
 
 
-          Text(
+          Flexible(
 
-            text,
+            child: Text(
 
-            style: const TextStyle(
+              text,
 
-              fontSize: 14,
+
+              overflow: TextOverflow.ellipsis,
+
+
+              style: const TextStyle(
+
+                fontSize:14,
+
+              ),
 
             ),
 
           ),
+
 
 
         ],
@@ -246,6 +284,7 @@ class ExploreScreen extends StatelessWidget {
 
 
     );
+
 
   }
 
