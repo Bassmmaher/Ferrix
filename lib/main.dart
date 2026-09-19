@@ -2,22 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
-import 'core/theme/app_theme.dart';
-import 'features/theme/cubit/theme_cubit.dart';
-import 'features/theme/cubit/theme_state.dart';
+import 'screens/login_screen.dart';
 
-import 'screens/explore_screen.dart';
+
+import 'features/product/data/services/product_api_service.dart';
+import 'features/product/data/repositories/product_repository.dart';
+
+import 'features/product/presentation/cubit/product_cubit.dart';
 
 
 
 void main() {
 
 
+  final productApiService = ProductApiService();
+
+
+  final productRepository =
+  ProductRepository(
+    productApiService,
+  );
+
+
   runApp(
 
-    BlocProvider(
+    MultiBlocProvider(
 
-      create: (context)=> ThemeCubit(),
+      providers: [
+
+        BlocProvider(
+          create: (_) =>
+          ProductCubit(
+            productRepository,
+          )
+            ..getProducts(),
+        ),
+
+      ],
+
 
       child: const MyApp(),
 
@@ -25,10 +47,7 @@ void main() {
 
   );
 
-
 }
-
-
 
 
 
@@ -38,54 +57,18 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
 
-
   @override
   Widget build(BuildContext context) {
 
 
-    return BlocBuilder<ThemeCubit, ThemeState>(
+    return MaterialApp(
+
+      debugShowCheckedModeBanner: false,
 
 
-      builder: (context,state){
-
-
-
-        return MaterialApp(
-
-
-          debugShowCheckedModeBanner: false,
-
-
-          theme: AppTheme.lightTheme,
-
-
-          darkTheme: AppTheme.darkTheme,
-
-
-
-          themeMode:
-
-          state.isDark
-
-              ? ThemeMode.dark
-
-              : ThemeMode.light,
-
-
-
-          home: const ExploreScreen(),
-
-
-        );
-
-
-
-      },
+      home: const LoginScreen(),
 
     );
 
-
   }
-
-
 }

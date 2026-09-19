@@ -19,14 +19,15 @@ class ProductApiService {
     );
 
 
-    List data = response.data;
+    final List data = response.data;
 
 
-    return data
-        .map(
+
+    return data.map(
+
           (item)=> ProductModel.fromJson(item),
-    )
-        .toList();
+
+    ).toList();
 
 
   }
