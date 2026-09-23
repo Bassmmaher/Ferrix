@@ -1,0 +1,72 @@
+┌──────────────────────────────────────────────────────────────┐
+│                                                              │
+│                    PRESENTATION LAYER                        │
+│                                                              │
+│   auth_controller.dart    auth_middleware.dart               │
+│   cors_middleware.dart    (server.dart routes)               │
+│                                                              │
+│   • Talks HTTP                                               │
+│   • Parses JSON                                              │
+│   • Maps errors → status codes                               │
+│   • No business logic                                        │
+│                                                              │
+└──────────────────────────┬───────────────────────────────────┘
+                           │ calls
+                           ▼
+┌──────────────────────────────────────────────────────────────┐
+│                                                              │
+│                    APPLICATION LAYER                         │
+│                                                              │
+│   sign_up_use_case.dart        login_use_case.dart           │
+│   verify_email_use_case.dart   resend_otp_use_case.dart      │
+│   auth_dtos.dart                                             │
+│                                                              │
+│   • Orchestrates the flow                                    │
+│   • One use case = one user action                           │
+│   • Depends only on DOMAIN contracts (abstractions)          │
+│                                                              │
+└──────────────────────────┬───────────────────────────────────┘
+                           │ uses
+                           ▼
+┌──────────────────────────────────────────────────────────────┐
+│                                                              │
+│                       DOMAIN LAYER                           │
+│                    ⚠️ NO DEPENDENCIES ⚠️                     │
+│                                                              │
+│   ENTITIES               VALUE OBJECTS                       │
+│   • user.dart            • email.dart                        │
+│   • otp.dart             • password.dart                     │
+│                          • full_name.dart                    │
+│   ENUMS                  • user_id.dart                      │
+│   • user_status.dart     • otp_code.dart                     │
+│   • otp_purpose.dart                                         │
+│                                                              │
+│   ERRORS                 REPOSITORY CONTRACTS                │
+│   • auth_errors.dart     • user_repository.dart              │
+│                          • otp_repository.dart               │
+│   DOMAIN SERVICE         • password_hasher.dart              │
+│   • auth_domain_service  • email_sender.dart                 │
+│                          • token_service.dart                │
+│                                                              │
+│   • Pure Dart logic                                          │
+│   • No bcrypt, no JWT, no shelf, no DB                       │
+│   • Just interfaces + rules                                  │
+│                                                              │
+└──────────────────────────▲───────────────────────────────────┘
+                           │ implements
+                           │
+┌──────────────────────────┴───────────────────────────────────┐
+│                                                              │
+│                  INFRASTRUCTURE LAYER                        │
+│                                                              │
+│   bcrypt_password_hasher.dart       (implements hasher)      │
+│   jwt_token_service.dart            (implements tokens)      │
+│   in_memory_user_repository.dart    (implements repo)        │
+│   in_memory_otp_repository.dart     (implements repo)        │
+│   console_email_sender.dart         (implements sender)      │
+│   resend_email_sender.dart          (implements sender)      │
+│                                                              │
+│   • Talks to the outside world                               │
+│   • Swappable — change 1 line to swap                        │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
